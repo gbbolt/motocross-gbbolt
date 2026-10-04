@@ -1,0 +1,109 @@
+{
+  "_doc": "How tools/audio.py drives Motocross Maniacs' sound engine. RAM names come from ram.inc. PlaySound starts a sound directly; here the id goes into wSoundQueued, which UpdateSound starts at the end of its first tick. Seven channels: 0-2 effects (square 1, square 2, noise), 3-6 music (square 1, square 2, wave, drums); the drum channel's notes start drum sounds 1-7 on channel 2.",
+  "init": "InitSound",
+  "update": "UpdateSound",
+  "update_hz": 64,
+  "_update_hz": "the timer interrupt runs the engine: rTAC = $07 (16384 Hz), rTMA = 0, so 16384 / 256 = 64 times a second",
+  "power_on": [
+    ["rNR52", 128],
+    ["rNR51", 255],
+    ["rNR50", 119]
+  ],
+  "stack": "0xE000",
+  "kinds": {
+    "music": {
+      "label": "Music",
+      "request": "wSoundQueued",
+      "_playing": "the sound id byte of the four music channels",
+      "playing": ["0xC380", "0xC480", "0xC580", "0xC680"],
+      "playing_mask": 255,
+      "ids": [25, 32],
+      "loops": true,
+      "max_seconds": 150
+    },
+    "sfx": {
+      "label": "Sound effects",
+      "request": "wSoundQueued",
+      "_playing": "the sound id byte of the effect channels (16 and 17 also use the wave channel)",
+      "playing": ["0xC080", "0xC180", "0xC280", "0xC580"],
+      "playing_mask": 255,
+      "ids": {
+        "list": [8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+      },
+      "max_seconds": 6
+    },
+    "engine": {
+      "label": "Engine sound",
+      "request": "wSoundQueued",
+      "playing": ["0xC380"],
+      "playing_mask": 255,
+      "ids": {
+        "list": [9]
+      },
+      "loops": false,
+      "max_seconds": 3
+    },
+    "drums": {
+      "label": "Drums",
+      "request": "wSoundQueued",
+      "playing": ["0xC280"],
+      "playing_mask": 255,
+      "ids": [1, 7],
+      "max_seconds": 3
+    }
+  },
+  "effect_channels": {
+    "sfx": [0, 1, 2, 3],
+    "drums": [3]
+  },
+  "names": {
+    "music 25": ["Course select", "CourseSelectDraw"],
+    "music 26": ["Finish", "CourseClearDraw: the course results"],
+    "music 27": ["New record", "CourseClearDraw: the results with a new best time"],
+    "music 28": ["GAME OVER", "GameOverStart"],
+    "music 29": ["Course music 1", "courses 4 and 8, after the start signal (CourseMusic)"],
+    "music 30": ["Course music 2", "courses 2 and 6 (CourseMusic)"],
+    "music 31": ["Course music 3", "courses 3 and 7 (CourseMusic)"],
+    "music 32": ["Course music 4", "courses 1 and 5 (CourseMusic)"],
+    "engine 9": ["The engine", "StartRace; its pitch follows the bike's speed (wEnginePitch)"],
+    "sfx 8": ["Pause", "CheckPause"],
+    "sfx 10": ["Nitro", "UpdateThrottle"],
+    "sfx 11": ["Nitro in the air", "UpdateThrottle: a nitro in the air with power-up B"],
+    "sfx 12": ["No nitro left", "NitroEmpty"],
+    "sfx 13": ["Item", "ItemTopSpeed, ItemNitro, ItemPowerUpA"],
+    "sfx 14": ["Clock", "ItemClock"],
+    "sfx 15": ["Power up", "ShowItemPopup"],
+    "sfx 16": ["Start light", "StartLight1, StartLight2, StartLight3"],
+    "sfx 17": ["GO!", "StartLightGo; the course music follows"],
+    "sfx 18": ["Hurry up", "RaceFrame: the last 10 seconds of a link race"],
+    "sfx 19": ["Wheel spray", "DrawWheelSpray"],
+    "sfx 20": ["Flip", "BikeFlipping"],
+    "sfx 21": ["Cursor", "TitleMenuInput and the course select"],
+    "sfx 22": ["Crash", "GroundFlipping, FallOrCrash"],
+    "sfx 23": ["Select", "TitleMenuInput, CourseSelectRun"],
+    "sfx 24": ["Finish line", "CheckCoursePoints: the bike reaches the finish"],
+    "drums 1": ["Drum 1", "the music's drum track"],
+    "drums 2": ["Drum 2", "the music's drum track"],
+    "drums 3": ["Drum 3", "the music's drum track"],
+    "drums 4": ["Drum 4", "the music's drum track"],
+    "drums 5": ["Drum 5", "the music's drum track"],
+    "drums 6": ["Drum 6", "the music's drum track"],
+    "drums 7": ["Drum 7", "the music's drum track"]
+  },
+  "pokes": {
+    "_doc": "RAM the game keeps setting while a sound plays: during a race SetMusicTempoNormal writes the course song's tempo (TempoNormal) every frame",
+    "music 29": {"wMusicTempo": 80},
+    "music 30": {"wMusicTempo": 56},
+    "music 31": {"wMusicTempo": 128},
+    "music 32": {"wMusicTempo": 48},
+    "engine 9": {"wEnginePitch": 16}
+  },
+  "loop_frames": {
+    "_doc": "[update where the loop starts, update where it jumps back] (from the $FE $FF jumps; measured by running the engine)",
+    "music 25": [1, 989],
+    "music 29": [1, 2794],
+    "music 30": [1, 2213],
+    "music 31": [386, 1922],
+    "music 32": [345, 3988]
+  }
+}

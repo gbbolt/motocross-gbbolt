@@ -1,0 +1,41 @@
+{
+  "_doc": "Facts about this game that the gbbolt tools need. Names are labels / RAM names of the disassembly.",
+  "id": "motocross",
+  "rom": "motocross.gb",
+  "sha1": "956a12a65a1c39948c312303719895bd6f141a61",
+  "title": "MOTOCROSS MANIACS",
+  "publisher": "Konami",
+  "year": 1991,
+  "main": "game.asm",
+  "link_flags": [
+    "--tiny"
+  ],
+  "fix_flags": [
+    "-v",
+    "-p",
+    "255"
+  ],
+  "test_memory": {
+    "stack_top": "0xE000",
+    "stack_zone": [
+      "0xDF00",
+      "0xE000"
+    ],
+    "free_ram": [
+      "0xC000",
+      "0xDF00"
+    ]
+  },
+  "entry": "Boot",
+  "jump_table_calls": [
+    "0x0229"
+  ],
+  "trace_entries": {
+    "0x032E": "Call_032E",
+    "0x01DD": "Call_01DD",
+    "0x01FA": "Call_01FA",
+    "0x0C00": "Call_0C00"
+  },
+  "tile_addressing": "8800",
+  "thumbnail": "gen/screens_title.png"
+}

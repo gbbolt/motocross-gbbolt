@@ -1,0 +1,61 @@
+# Virtual folders, in reading order: path | description
+# Functions say where they live with `;@ path: folder/sub`; data blocks without a
+# path go to the folder of the functions that use them.
+system | Power-on, interrupts and the hardware services used everywhere.
+system/vectors | The fixed addresses the CPU jumps to: the rst routines and the interrupt vectors.
+system/boot | Power-on, the I/O registers and the main loop.
+system/interrupts | VBlank (sprites, scrolling, one track column), the timer (the sound engine) and the serial byte.
+system/lcd | The LCD on and off, waiting for VRAM, the OAM DMA routine in HRAM.
+system/input | Reading the joypad.
+lib | Small general routines.
+lib/control | Jumping through a table of addresses.
+lib/math | 16-bit sums and differences, multiplying, negating, sine and cosine products.
+lib/memory | Copying memory.
+lib/timing | Busy-wait delays.
+gfx | Getting things onto the screen.
+gfx/tiles | Loading tile graphics: lists of tile sets, some flipped, inverted or from 1 bit per pixel.
+gfx/tilemaps | Screens packed with run lengths, single tiles, the window.
+gfx/text | Strings drawn at BG map addresses.
+gfx/palette | Fading the palettes.
+game | The screens around the races.
+game/state | The game states and their steps: Palcom screen, title, course select, intro, race, GAME OVER, course clear.
+title | The title screen and its menu.
+title/palcom | The Palcom screen that opens the game.
+game/select | SELECT COURSE and SELECT LEVEL.
+game/intro | The card before a race: course, record, qualifying time.
+game/results | The results after a race, the course records.
+game/gameover | TIME UP and GAME OVER.
+race | One race: two laps of a course against the clock, alone, against the computer or over the link cable.
+race/setup | Building the race: the level, the bikes, the first screen.
+race/loop | One frame of the race.
+race/start | The start lights.
+race/bikes | Moving both bikes: the same code runs on each bike's record in turn.
+race/com | The computer's bike.
+race/camera | The camera that follows the bike.
+race/clock | The race clock and the time limit.
+race/laps | The lap line and the finish.
+race/hud | The status bar: speedometer, nitros, power-ups, time.
+bike | The bike's physics and drawing.
+bike/engine | The throttle and the nitro.
+bike/physics | Angle, speed and velocity.
+bike/modes | What the bike does in each mode: riding, flying, on the back wheel, falling, crashed.
+bike/ground | What the ground under the wheels does to each mode.
+bike/track | Reading the track round the bike.
+bike/crash | Crashing.
+bike/draw | The bike's sprites, the flame, the spray and the afterimages.
+level | The courses: built from track pieces into a map of metatiles.
+level/build | Placing the track pieces and the items into the level map.
+level/map | Metatiles and map addresses.
+level/draw | Drawing metatiles into the BG map.
+level/scroll | One new metatile column as the camera moves.
+items | Item boxes and hidden items: taking them and what they do.
+link | The link cable: two Game Boys racing each other.
+link/serial | The handshake and the joypad exchange.
+sound | The sound engine: 7 channels (3 effects, 4 music), 32 sounds, run 64 times a second by the timer.
+sound/api | Asking for sounds and the tempo.
+sound/engine | Updating every channel.
+sound/engine/start | Starting a sound on its channels.
+sound/engine/stream | Reading a channel's stream.
+sound/engine/commands | The commands in a stream.
+sound/engine/notes | Notes, rests, noise and drums.
+sound/engine/registers | Writing the sound registers.
