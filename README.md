@@ -5,7 +5,7 @@
 A complete, matching disassembly of *Motocross Maniacs* for the Game Boy (Konami; this is
 the 1991 European release, published by Palcom), with pseudo-code written next to every
 function and checked against the original code in an emulator. It is read with
-[gbbolt](https://github.com/AlexanderStebner/gbbolt): code and pseudo-code side by side,
+[gbbolt](https://github.com/gbbolt/gbbolt): code and pseudo-code side by side,
 linked line by line.
 
 - **311 of 311 functions** have pseudo-code. 227 are verified by differential testing:
@@ -44,8 +44,8 @@ The disassembly rebuilds the original ROM byte for byte. You need
 folder:
 
 ```
-git clone https://github.com/AlexanderStebner/gbbolt
-git clone https://github.com/AlexanderStebner/motocross-gbbolt
+git clone https://github.com/gbbolt/gbbolt
+git clone https://github.com/gbbolt/motocross-gbbolt
 cd motocross-gbbolt
 python ../gbbolt/tools/audio.py             # render the music (needs ffmpeg)
 python ../gbbolt/tools/gbbolt.py            # build, verify, write out/site/index.html
